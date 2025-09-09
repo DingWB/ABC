@@ -11,17 +11,6 @@ from pandas.errors import EmptyDataError
 
 configfile: "config/config.yaml"
 
-# Making paths absolute is important so that ABC can be 
-# used as a submodule for ENCODE-rE2G
-ABC_DIR_PATH = os.path.abspath(config["ABC_DIR_PATH"])
-config = make_paths_absolute(config, ABC_DIR_PATH)
-print(config)
-
-RESULTS_DIR = config['results_dir']
-BIOSAMPLES_CONFIG = load_biosamples_config(config)
-SCRIPTS_DIR = os.path.join(ABC_DIR_PATH, "workflow/scripts")
-ABC_THRESHOLDS = load_abc_thresholds(config)
-
 # define functions
 
 class InvalidConfig(Exception):
@@ -203,6 +192,17 @@ def _configure_tss_and_gene_files(biosamples_config):
 					
 	biosamples_config["TSS"] = TSS_files
 	biosamples_config["genes"] = gene_files
+
+# Making paths absolute is important so that ABC can be 
+# used as a submodule for ENCODE-rE2G
+ABC_DIR_PATH = os.path.abspath(config["ABC_DIR_PATH"])
+config = make_paths_absolute(config, ABC_DIR_PATH)
+print(config)
+
+RESULTS_DIR = config['results_dir']
+BIOSAMPLES_CONFIG = load_biosamples_config(config)
+SCRIPTS_DIR = os.path.join(ABC_DIR_PATH, "workflow/scripts")
+ABC_THRESHOLDS = load_abc_thresholds(config)
 
 # rules
 # master rule

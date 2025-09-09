@@ -20,7 +20,7 @@ ref:
 
 ### RULE SPECIFIC PARAMS
 params_macs:
-        run_macs: True
+        run_macs: False
         has_header: True
         pval: 0.1
         genome_size: hs  # shortcuts: hs: human ; mm: mice
@@ -35,7 +35,7 @@ params_candidate:
 params_neighborhoods:
         # Recommended to keep as True. Setting to False leads will result in 
         # different ABC scores that don't follow the pre-set ABC thresholds
-        use_qnorm: False  # default is True
+        use_qnorm: True
         
 # These parameters are used to run the Predictions portion of the abc code
 params_predict:
