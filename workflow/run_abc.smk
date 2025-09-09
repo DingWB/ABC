@@ -270,10 +270,10 @@ rule sort_narrowpeaks:
 	resources:
 		mem_mb=determine_mem_mb
 	run:
-        if config['params_macs']['run_macs'] or not config['params_macs']['has_header']: ## intersect to remove alternate chromosomes
-            shell(f"bedtools intersect -u -a {input.narrowPeak} -b {input.chrom_sizes_bed} | bedtools sort -faidx {params.chrom_sizes} -i stdin > {output.narrowPeakSorted}")
-        else:
-            shell(f"sed '1d' {input.narrowPeak} | bedtools intersect -u -a stdin -b {input.chrom_sizes_bed} | bedtools sort -faidx {params.chrom_sizes} -i stdin > {output.narrowPeakSorted}")
+		if config['params_macs']['run_macs'] or not config['params_macs']['has_header']: ## intersect to remove alternate chromosomes
+			shell(f"bedtools intersect -u -a {input.narrowPeak} -b {input.chrom_sizes_bed} | bedtools sort -faidx {params.chrom_sizes} -i stdin > {output.narrowPeakSorted}")
+		else:
+			shell(f"sed '1d' {input.narrowPeak} | bedtools intersect -u -a stdin -b {input.chrom_sizes_bed} | bedtools sort -faidx {params.chrom_sizes} -i stdin > {output.narrowPeakSorted}")
 
 
 rule make_candidate_regions:
