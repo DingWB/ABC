@@ -2,7 +2,7 @@
 
 ### INPUT DATA
 # Add your inputs here
-biosamplesTable: "config/config_biosamples_chr22.tsv"  # replace with your own config/config_biosamples.tsv
+biosamplesTable: "config/config_biosamples.tsv"  # replace with your own config/config_biosamples.tsv
 
 ### OUTPUT DATA
 results_dir: "results/"
@@ -35,7 +35,7 @@ params_candidate:
 params_neighborhoods:
         # Recommended to keep as True. Setting to False leads will result in 
         # different ABC scores that don't follow the pre-set ABC thresholds
-        use_qnorm: True  
+        use_qnorm: False  # default is True
         
 # These parameters are used to run the Predictions portion of the abc code
 params_predict:

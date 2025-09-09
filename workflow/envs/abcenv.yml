@@ -1,4 +1,4 @@
-name: abc-env
+name: abc
 channels:
   - bioconda
   - conda-forge

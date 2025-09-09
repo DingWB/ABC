@@ -16,3 +16,15 @@ If you use the ABC model in published research, please cite:
 
 ## Contact
 Please submit a GitHub issue with any questions or if you experience any issues/bugs.
+
+
+## Installation
+```shell
+git clone https://github.com/DingWB/ABC.git
+conda env create -y -f ~/Software/ABC-Enhancer-Gene-Prediction/workflow/envs/abcenv.yml --prefix ~/Software/conda/abc
+```
+
+## Example
+```shell
+snakemake -d ~/Software/ABC --snakefile ~/Software/ABC/workflow/run_abc.smk -np
+```

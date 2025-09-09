@@ -15,6 +15,7 @@ configfile: "config/config.yaml"
 # used as a submodule for ENCODE-rE2G
 ABC_DIR_PATH = os.path.abspath(config["ABC_DIR_PATH"])
 config = make_paths_absolute(config, ABC_DIR_PATH)
+print(config)
 
 RESULTS_DIR = config['results_dir']
 BIOSAMPLES_CONFIG = load_biosamples_config(config)
@@ -269,17 +270,10 @@ rule sort_narrowpeaks:
 	resources:
 		mem_mb=determine_mem_mb
 	run:
-        if config['params_macs']['run_macs'] or not config['params_macs']['has_header']:
-            shell("""
-		# intersect to remove alternate chromosomes
-		bedtools intersect -u -a {input.narrowPeak} -b {input.chrom_sizes_bed} | \
-		bedtools sort -faidx {params.chrom_sizes} -i stdin > {output.narrowPeakSorted}
-		""")
+        if config['params_macs']['run_macs'] or not config['params_macs']['has_header']: ## intersect to remove alternate chromosomes
+            shell(f"bedtools intersect -u -a {input.narrowPeak} -b {input.chrom_sizes_bed} | bedtools sort -faidx {params.chrom_sizes} -i stdin > {output.narrowPeakSorted}")
         else:
-            shell("""
-		sed '1d' {input.narrowPeak} | bedtools intersect -u -a stdin -b {input.chrom_sizes_bed} | \
-		bedtools sort -faidx {params.chrom_sizes} -i stdin > {output.narrowPeakSorted}
-		""")
+            shell(f"sed '1d' {input.narrowPeak} | bedtools intersect -u -a stdin -b {input.chrom_sizes_bed} | bedtools sort -faidx {params.chrom_sizes} -i stdin > {output.narrowPeakSorted}")
 
 
 rule make_candidate_regions:

@@ -1,4 +1,4 @@
-name: abc-env
+name: abc
 # note: this environment does not support pipeline due to package conflicts
 # for use to make major changes to the pipeline environment
 channels:
