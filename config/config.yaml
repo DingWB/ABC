@@ -20,6 +20,8 @@ ref:
 
 ### RULE SPECIFIC PARAMS
 params_macs:
+        run_macs: True
+        has_header: True
         pval: 0.1
         genome_size: hs  # shortcuts: hs: human ; mm: mice
         threads: 10
