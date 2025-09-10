@@ -27,4 +27,5 @@ conda env create -y -f ~/Software/ABC-Enhancer-Gene-Prediction/workflow/envs/abc
 ## Example
 ```shell
 snakemake -d ~/Software/ABC --snakefile ~/Software/ABC/workflow/run_abc.smk -np
+snakemake -d ~/Software/ABC --snakefile ~/Software/ABC/workflow/run_abc.smk -p -j 1
 ```
