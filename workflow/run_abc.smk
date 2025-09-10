@@ -10,6 +10,7 @@ import random
 from pandas.errors import EmptyDataError
 
 configfile: "config/config.yaml"
+SNAKEFILE_DIR = workflow.basedir
 
 # define functions
 
@@ -195,13 +196,16 @@ def _configure_tss_and_gene_files(biosamples_config):
 
 # Making paths absolute is important so that ABC can be 
 # used as a submodule for ENCODE-rE2G
-ABC_DIR_PATH = os.path.abspath(config["ABC_DIR_PATH"])
-config = make_paths_absolute(config, ABC_DIR_PATH)
-print(config)
+# ABC_DIR_PATH = os.path.abspath(config["ABC_DIR_PATH"])
+# config = make_paths_absolute(config, ABC_DIR_PATH)
+# print(config)
+
+# print(SNAKEFILE_DIR)
 
 RESULTS_DIR = config['results_dir']
 BIOSAMPLES_CONFIG = load_biosamples_config(config)
-SCRIPTS_DIR = os.path.join(ABC_DIR_PATH, "workflow/scripts")
+#SCRIPTS_DIR = os.path.join(ABC_DIR_PATH, "workflow/scripts")
+SCRIPTS_DIR = os.path.join(SNAKEFILE_DIR,"scripts")
 ABC_THRESHOLDS = load_abc_thresholds(config)
 
 # rules
@@ -312,10 +316,10 @@ rule create_neighborhoods:
 		candidateRegions = os.path.join(RESULTS_DIR, "{biosample}", "Peaks", "macs2_peaks.narrowPeak.sorted.candidateRegions.bed"),
 		chrom_sizes_bed = os.path.join(RESULTS_DIR, "tmp", os.path.basename(config['ref']['chrom_sizes']) + '.bed')
 	params:
-		DHS = lambda wildcards: BIOSAMPLES_CONFIG.loc[wildcards.biosample, "DHS"] or '',
-		ATAC = lambda wildcards: BIOSAMPLES_CONFIG.loc[wildcards.biosample, "ATAC"] or '',
+		# DHS = lambda wildcards: BIOSAMPLES_CONFIG.loc[wildcards.biosample, "DHS"] or '',
+		# ATAC = lambda wildcards: BIOSAMPLES_CONFIG.loc[wildcards.biosample, "ATAC"] or '',
+		# H3K27ac = lambda wildcards: BIOSAMPLES_CONFIG.loc[wildcards.biosample, "H3K27ac"] or '',
 		default = lambda wildcards: BIOSAMPLES_CONFIG.loc[wildcards.biosample, 'default_accessibility_feature'],
-		H3K27ac = lambda wildcards: BIOSAMPLES_CONFIG.loc[wildcards.biosample, "H3K27ac"] or '',
 		expression_table = lambda wildcards: BIOSAMPLES_CONFIG.loc[wildcards.biosample, "Expression"] or '',
 		genes = lambda wildcards: BIOSAMPLES_CONFIG.loc[wildcards.biosample, 'genes'],
 		ubiquitous_genes = config['ref']['ubiquitous_genes'],
@@ -339,8 +343,6 @@ rule create_neighborhoods:
 						
 		python {params.scripts_dir}/run.neighborhoods.py \
 			--candidate_enhancer_regions {input.candidateRegions} \
-			--DHS {params.DHS} \
-			--ATAC {params.ATAC} \
 			--default_accessibility_feature {params.default} \
 			--chrom_sizes {params.chrom_sizes} \
 			--chrom_sizes_bed {input.chrom_sizes_bed} \
@@ -348,8 +350,7 @@ rule create_neighborhoods:
 			--genes {output.processed_genes_file} \
 			--expression_table {params.expression_table} \
 			--ubiquitously_expressed_genes {params.ubiquitous_genes} \
-			--H3K27ac {params.H3K27ac} \
-			{params.qnorm} 
+			{params.qnorm}  # --DHS {params.DHS} --ATAC {params.ATAC} --H3K27ac {params.H3K27ac}
 		"""
 
 rule create_predictions:

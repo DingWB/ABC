@@ -2,7 +2,7 @@
 
 ### INPUT DATA
 # Add your inputs here
-biosamplesTable: "config/config_biosamples.tsv"  # replace with your own config/config_biosamples.tsv
+biosamplesTable: "config/biosamples.tsv"  # replace with your own config/config_biosamples.tsv
 
 ### OUTPUT DATA
 results_dir: "results/"
@@ -49,10 +49,3 @@ params_filter_predictions:
         threshold: null  # null => Automatic determination based on input 
         include_self_promoter: True
         only_expressed_genes: False
-
-
-### INTERNAL USE ONLY
-
-# ABS path to prepend to reference and script files
-# Only relevant when using ABC as a submodule
-ABC_DIR_PATH: ""
