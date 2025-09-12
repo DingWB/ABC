@@ -301,7 +301,7 @@ rule make_candidate_regions:
 	shell: 
 		"""
 		python {params.scripts_dir}/makeCandidateRegions.py \
---narrowPeak {input.narrowPeak}\
+--narrowPeak {input.narrowPeak} \
 --accessibility {input.accessibility} \
 --outDir {params.output_dir} \
 --chrom_sizes {params.chrom_sizes} \
