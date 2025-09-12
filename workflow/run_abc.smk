@@ -237,17 +237,17 @@ rule call_macs_peaks:
 		fi
 
 		macs2 callpeak \
-		-f $FORMAT \
-		-g {params.genome_size} \
-		-p {params.pval} \
-		-n macs2 \
-		--shift -75 \
-		--extsize 150 \
-		--nomodel \
-		--keep-dup all \
-		--call-summits \
-		--outdir {RESULTS_DIR}/{wildcards.biosample}/Peaks \
-		-t {input.accessibility} 
+-f $FORMAT \
+-g {params.genome_size} \
+-p {params.pval} \
+-n macs2 \
+--shift -75 \
+--extsize 150 \
+--nomodel \
+--keep-dup all \
+--call-summits \
+--outdir {RESULTS_DIR}/{wildcards.biosample}/Peaks \
+-t {input.accessibility} 
 		"""
 
 rule generate_chrom_sizes_bed_file:
@@ -301,15 +301,15 @@ rule make_candidate_regions:
 	shell: 
 		"""
 		python {params.scripts_dir}/makeCandidateRegions.py \
-			--narrowPeak {input.narrowPeak}\
-			--accessibility {input.accessibility} \
-			--outDir {params.output_dir} \
-			--chrom_sizes {params.chrom_sizes} \
-			--chrom_sizes_bed {input.chrom_sizes_bed} \
-			--regions_blocklist {params.regions_blocklist} \
-			--regions_includelist {params.TSS} \
-			--peakExtendFromSummit {params.peakExtendFromSummit} \
-			--nStrongestPeak {params.nStrongestPeak} {params.ignoreSummits}
+--narrowPeak {input.narrowPeak}\
+--accessibility {input.accessibility} \
+--outDir {params.output_dir} \
+--chrom_sizes {params.chrom_sizes} \
+--chrom_sizes_bed {input.chrom_sizes_bed} \
+--regions_blocklist {params.regions_blocklist} \
+--regions_includelist {params.TSS} \
+--peakExtendFromSummit {params.peakExtendFromSummit} \
+--nStrongestPeak {params.nStrongestPeak} {params.ignoreSummits}
 		"""
 
 rule create_neighborhoods:
@@ -317,9 +317,9 @@ rule create_neighborhoods:
 		candidateRegions = os.path.join(RESULTS_DIR, "{biosample}", "Peaks", "macs2_peaks.narrowPeak.sorted.candidateRegions.bed"),
 		chrom_sizes_bed = os.path.join(RESULTS_DIR, "tmp", os.path.basename(config['ref']['chrom_sizes']) + '.bed')
 	params:
-		# DHS = lambda wildcards: BIOSAMPLES_CONFIG.loc[wildcards.biosample, "DHS"] or '',
-		# ATAC = lambda wildcards: BIOSAMPLES_CONFIG.loc[wildcards.biosample, "ATAC"] or '',
-		# H3K27ac = lambda wildcards: BIOSAMPLES_CONFIG.loc[wildcards.biosample, "H3K27ac"] or '',
+		DHS = lambda wildcards: BIOSAMPLES_CONFIG.loc[wildcards.biosample, "DHS"] or '',
+		ATAC = lambda wildcards: BIOSAMPLES_CONFIG.loc[wildcards.biosample, "ATAC"] or '',
+		H3K27ac = lambda wildcards: BIOSAMPLES_CONFIG.loc[wildcards.biosample, "H3K27ac"] or '',
 		default = lambda wildcards: BIOSAMPLES_CONFIG.loc[wildcards.biosample, 'default_accessibility_feature'],
 		expression_table = lambda wildcards: BIOSAMPLES_CONFIG.loc[wildcards.biosample, "Expression"] or '',
 		genes = lambda wildcards: BIOSAMPLES_CONFIG.loc[wildcards.biosample, 'genes'],
@@ -343,15 +343,15 @@ rule create_neighborhoods:
 		uniq > {output.processed_genes_file}
 						
 		python {params.scripts_dir}/run.neighborhoods.py \
-			--candidate_enhancer_regions {input.candidateRegions} \
-			--default_accessibility_feature {params.default} \
-			--chrom_sizes {params.chrom_sizes} \
-			--chrom_sizes_bed {input.chrom_sizes_bed} \
-			--outdir {output.neighborhoodDirectory} \
-			--genes {output.processed_genes_file} \
-			--expression_table {params.expression_table} \
-			--ubiquitously_expressed_genes {params.ubiquitous_genes} \
-			{params.qnorm}  # --DHS {params.DHS} --ATAC {params.ATAC} --H3K27ac {params.H3K27ac}
+--candidate_enhancer_regions {input.candidateRegions} \
+--default_accessibility_feature {params.default} \
+--chrom_sizes {params.chrom_sizes} \
+--chrom_sizes_bed {input.chrom_sizes_bed} \
+--outdir {output.neighborhoodDirectory} \
+--genes {output.processed_genes_file} \
+--expression_table {params.expression_table} \
+--ubiquitously_expressed_genes {params.ubiquitous_genes} \
+{params.qnorm} --DHS {params.DHS} --ATAC {params.ATAC} --H3K27ac {params.H3K27ac}
 		"""
 
 rule create_predictions:
@@ -378,18 +378,18 @@ rule create_predictions:
 	shell:
 		"""
 		python {params.scripts_dir}/predict.py \
-			--enhancers {input.enhancers} \
-			--outdir {params.output_dir} \
-			--score_column {params.score_column} \
-			--chrom_sizes {params.chrom_sizes} \
-			--accessibility_feature {params.accessibility_feature} \
-			--cellType {params.cellType} \
-			--genes {input.genes} \
-			--hic_gamma {params.gamma} \
-			--hic_scale {params.scale} \
-			--hic_pseudocount_distance {params.hic_pseudocount_distance} \
-			{params.hic_params} \
-			{params.flags}
+--enhancers {input.enhancers} \
+--outdir {params.output_dir} \
+--score_column {params.score_column} \
+--chrom_sizes {params.chrom_sizes} \
+--accessibility_feature {params.accessibility_feature} \
+--cellType {params.cellType} \
+--genes {input.genes} \
+--hic_gamma {params.gamma} \
+--hic_scale {params.scale} \
+--hic_pseudocount_distance {params.hic_pseudocount_distance} \
+{params.hic_params} \
+{params.flags}
 		"""
 
 rule filter_predictions:
@@ -411,16 +411,16 @@ rule filter_predictions:
 	shell:
 		"""
 		python {SCRIPTS_DIR}/filter_predictions.py \
-			--output_tsv_file {output.enhPredictionsFull} \
-			--output_slim_tsv_file {output.enhPredictionsSlim} \
-			--output_bed_file {output.enhPredictionsFullBedpe} \
-			--output_gene_stats_file {output.genePredictionsStats} \
-			--pred_file {input.allPutative} \
-			--pred_nonexpressed_file {input.allPutativeNonExpressed} \
-			--score_column {params.score_column} \
-			--threshold {params.threshold} \
-			--include_self_promoter {params.include_self_promoter} \
-			--only_expressed_genes {params.only_expressed_genes}
+--output_tsv_file {output.enhPredictionsFull} \
+--output_slim_tsv_file {output.enhPredictionsSlim} \
+--output_bed_file {output.enhPredictionsFullBedpe} \
+--output_gene_stats_file {output.genePredictionsStats} \
+--pred_file {input.allPutative} \
+--pred_nonexpressed_file {input.allPutativeNonExpressed} \
+--score_column {params.score_column} \
+--threshold {params.threshold} \
+--include_self_promoter {params.include_self_promoter} \
+--only_expressed_genes {params.only_expressed_genes}
 		"""
 
 rule generate_qc_plot_and_summary:
@@ -442,14 +442,14 @@ rule generate_qc_plot_and_summary:
 	shell:
 		"""
 		python {params.scripts_dir}/grabMetrics.py \
-			--outdir {params.output_dir} \
-			--output_qc_summary {output.qc_summary} \
-			--output_qc_plots {output.qc_plots} \
-			--macs_peaks {input.candidateRegions} \
-			--neighborhood_outdir {input.neighborhoodDirectory} \
-			--preds_file {input.enhPredictionsFull} \
-			--chrom_sizes {input.chrom_sizes} \
-			--hic_gamma {params.gamma} \
-			--hic_scale {params.scale} 
+--outdir {params.output_dir} \
+--output_qc_summary {output.qc_summary} \
+--output_qc_plots {output.qc_plots} \
+--macs_peaks {input.candidateRegions} \
+--neighborhood_outdir {input.neighborhoodDirectory} \
+--preds_file {input.enhPredictionsFull} \
+--chrom_sizes {input.chrom_sizes} \
+--hic_gamma {params.gamma} \
+--hic_scale {params.scale} 
 		"""
         

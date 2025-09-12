@@ -63,24 +63,24 @@ def parseargs(required_args=True):
     )
 
     # epi
-    # parser.add_argument(
-    #     "--H3K27ac",
-    #     default="",
-    #     nargs="?",
-    #     help="Comma delimited string of H3K27ac .bam files",
-    # )
-    # parser.add_argument(
-    #     "--DHS",
-    #     default="",
-    #     nargs="?",
-    #     help="Comma delimited string of DHS .bam files. Either ATAC or DHS must be provided",
-    # )
-    # parser.add_argument(
-    #     "--ATAC",
-    #     default="",
-    #     nargs="?",
-    #     help="Comma delimited string of ATAC .bam files. Either ATAC or DHS must be provided",
-    # )
+    parser.add_argument(
+        "--H3K27ac",
+        default="",
+        nargs="?",
+        help="Comma delimited string of H3K27ac .bam files",
+    )
+    parser.add_argument(
+        "--DHS",
+        default="",
+        nargs="?",
+        help="Comma delimited string of DHS .bam files. Either ATAC or DHS must be provided",
+    )
+    parser.add_argument(
+        "--ATAC",
+        default="",
+        nargs="?",
+        help="Comma delimited string of ATAC .bam files. Either ATAC or DHS must be provided",
+    )
     parser.add_argument(
         "--default_accessibility_feature",
         default=None,
