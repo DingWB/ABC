@@ -83,7 +83,7 @@ def processCellType(args):
     write_params(args, os.path.join(args.outDir, "params.txt"))
 
     # Make candidate regions
-    if not args.ignoreSummits:
+    if not args.ignoreSummits: # narrowPeak format
         make_candidate_regions_from_summits(
             macs_peaks=args.narrowPeak,
             accessibility_files=args.accessibility,
@@ -95,7 +95,7 @@ def processCellType(args):
             peak_extend=args.peakExtendFromSummit,
             outdir=args.outDir,
         )
-    else:
+    else: # could be bed format, such as consensus peaks, DMR and other bed file (3 or more columns)
         make_candidate_regions_from_peaks(
             macs_peaks=args.narrowPeak,
             accessibility_files=args.accessibility,

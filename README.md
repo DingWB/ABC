@@ -36,6 +36,8 @@ snakemake -d ~/Software/ABC --snakefile ~/Software/ABC/workflow/run_abc.smk -p -
 - Neighborhoods/GeneList.txt: Dnase-seq (or ATAC-seq) and H3K27ac ChIP-seq read counts on gene bodies and gene promoter regions
 - Predictions/EnhancerPredictionsAllPutative.txt.gz: ABC scores for all element-gene pairs. Includes promoter elements and pairs with scores below the threshold. Only includes expressed genes. This file includes both the 'positive' and 'negative' predictions of the model. (use --make_all_putative to generate this file).
 - EnhancerPredictionsAllPutativeNonExpressedGenes.txt.gz: Same as above for non-expressed genes. This file is provided for completeness but we generally do not recommend using these predictions.
+- EnhancerPredictionsFull_threshold0.025_self_promoter.tsv: take EnhancerPredictionsAllPutative.txt.gz as input and: add non_expressed genes + filter based on ABC score + filter by self promoter 
+- EnhancerPredictions_threshold0.025_self_promoter.tsv: subset the columns from EnhancerPredictionsFull_threshold0.025_self_promoter.tsv
 - Predictions/EnhancerPredictionsFull_threshold0.025_self_promoter.tsv
 
 

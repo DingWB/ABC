@@ -30,6 +30,7 @@ params_macs:
 params_candidate:
         peakExtendFromSummit: 250
         nStrongestPeaks: 150000
+        ignoreSummits: False # if True, peaks can be bed format (such as DMR or consensus peaks), otherwise, it should be narrowPeak format
 
 # These parameters are used to run the Run Neighborhoods portion of the abc code
 params_neighborhoods:

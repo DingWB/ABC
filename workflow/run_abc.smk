@@ -293,6 +293,7 @@ rule make_candidate_regions:
 		nStrongestPeak = config['params_candidate']['nStrongestPeaks'],
 		output_dir = os.path.join(RESULTS_DIR, "{biosample}", "Peaks"),
 		scripts_dir = SCRIPTS_DIR,
+		ignoreSummits="--ignoreSummits" if config['params_candidate']['ignoreSummits'] else ""
 	output: 
 		candidateRegions = os.path.join(RESULTS_DIR, "{biosample}", "Peaks", "macs2_peaks.narrowPeak.sorted.candidateRegions.bed")
 	resources:
@@ -308,7 +309,7 @@ rule make_candidate_regions:
 			--regions_blocklist {params.regions_blocklist} \
 			--regions_includelist {params.TSS} \
 			--peakExtendFromSummit {params.peakExtendFromSummit} \
-			--nStrongestPeak {params.nStrongestPeak}
+			--nStrongestPeak {params.nStrongestPeak} {params.ignoreSummits}
 		"""
 
 rule create_neighborhoods:
