@@ -35,53 +35,55 @@ def parseargs():
 
 
 def main(args):
-    if args.chromosomes == "all":
+    if args.chromosomes == "all_chrom_no_chr":
         chromosomes = list(range(1, 23)) + ["X"]
+    elif args.chromosomes == "all":
+        chromosomes=["chr" + str(x) for x in list(range(1, 23))] + ["chrX"]
     else:
         chromosomes = args.chromosomes.split(",")
 
     for chromosome in chromosomes:
         print("Starting chr" + str(chromosome) + " ... ")
-        outdir = "{0}/chr{1}/".format(args.outdir, chromosome)
+        outdir = "{0}/{1}/".format(args.outdir, chromosome)
         command = "mkdir -p " + outdir
         run_command(command)
 
         ## Download observed matrix with KR normalization
         command = (
             args.juicebox
-            + " dump observed KR {0} {1} {1} BP {3} {2}chr{1}.KRobserved".format(
+            + " dump observed KR {0} {1} {1} BP {3} {2}{1}.KRobserved".format(
                 args.hic_file, chromosome, outdir, args.resolution
             )
         )
         print(command)
         run_command(command)
         if not args.skip_gzip:
-            run_command("gzip {0}chr{1}.KRobserved".format(outdir, chromosome))
+            run_command("gzip {0}{1}.KRobserved".format(outdir, chromosome))
 
         ## Download KR norm file
         command = (
             args.juicebox
-            + " dump norm KR {0} {1} BP {3} {2}chr{1}.KRnorm".format(
+            + " dump norm KR {0} {1} BP {3} {2}{1}.KRnorm".format(
                 args.hic_file, chromosome, outdir, args.resolution
             )
         )
         run_command(command)
         print(command)
         if not args.skip_gzip:
-            run_command("gzip {0}chr{1}.KRnorm".format(outdir, chromosome))
+            run_command("gzip {0}{1}.KRnorm".format(outdir, chromosome))
 
         if args.include_raw:
             ## Download raw observed matrix
             command = (
                 args.juicebox
-                + " dump observed NONE {0} {1} {1} BP {3} {2}chr{1}.RAWobserved".format(
+                + " dump observed NONE {0} {1} {1} BP {3} {2}{1}.RAWobserved".format(
                     args.hic_file, chromosome, outdir, args.resolution
                 )
             )
             print(command)
             run_command(command)
             if not args.skip_gzip:
-                run_command("gzip {0}chr{1}.RAWobserved".format(outdir, chromosome))
+                run_command("gzip {0}{1}.RAWobserved".format(outdir, chromosome))
 
 
 if __name__ == "__main__":

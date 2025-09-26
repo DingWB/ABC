@@ -204,6 +204,12 @@ def _configure_tss_and_gene_files(biosamples_config):
 
 RESULTS_DIR = config['results_dir']
 BIOSAMPLES_CONFIG = load_biosamples_config(config)
+# add estimated powerlaw hic_gamma and hic_scale
+existed_cols=BIOSAMPLES_CONFIG.columns.tolist()
+if 'hic_gamma' not in existed_cols:
+    BIOSAMPLES_CONFIG['hic_gamma']=config['params_predict']['hic_gamma']
+if 'hic_scale' not in existed_cols:
+    BIOSAMPLES_CONFIG['hic_gamma']=config['params_predict']['hic_scale']
 #SCRIPTS_DIR = os.path.join(ABC_DIR_PATH, "workflow/scripts")
 SCRIPTS_DIR = os.path.join(SNAKEFILE_DIR,"scripts")
 ABC_THRESHOLDS = load_abc_thresholds(config)
@@ -365,8 +371,10 @@ rule create_predictions:
 		hic_params = _get_run_predictions_hic_params,
 		chrom_sizes = config['ref']['chrom_sizes'],
 		flags = config['params_predict']['flags'],
-		gamma = config['params_predict']['hic_gamma'],
-		scale = config['params_predict']['hic_scale'],
+		# gamma = config['params_predict']['hic_gamma'],
+		# scale = config['params_predict']['hic_scale'],
+		gamma = lambda wildcards: BIOSAMPLES_CONFIG.loc[wildcards.biosample, "hic_gamma"],
+		scale = lambda wildcards: BIOSAMPLES_CONFIG.loc[wildcards.biosample, "hic_scale"],
 		hic_pseudocount_distance = config['params_predict']['hic_pseudocount_distance'],
 		accessibility_feature = lambda wildcards: BIOSAMPLES_CONFIG.loc[wildcards.biosample, 'default_accessibility_feature'],
 		scripts_dir = SCRIPTS_DIR,

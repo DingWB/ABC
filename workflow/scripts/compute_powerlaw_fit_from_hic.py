@@ -131,7 +131,6 @@ def load_hic_for_powerlaw(
                     min_window=min_window,
                     gamma=np.nan,
                     scale=np.nan,
-                    interpolate_nan=False,
                 )
                 this_data["dist_for_fit"] = (
                     abs(this_data["bin1"] - this_data["bin2"]) * hic_resolution
