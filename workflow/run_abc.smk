@@ -209,7 +209,7 @@ existed_cols=BIOSAMPLES_CONFIG.columns.tolist()
 if 'hic_gamma' not in existed_cols:
     BIOSAMPLES_CONFIG['hic_gamma']=config['params_predict']['hic_gamma']
 if 'hic_scale' not in existed_cols:
-    BIOSAMPLES_CONFIG['hic_gamma']=config['params_predict']['hic_scale']
+    BIOSAMPLES_CONFIG['hic_scale']=config['params_predict']['hic_scale']
 #SCRIPTS_DIR = os.path.join(ABC_DIR_PATH, "workflow/scripts")
 SCRIPTS_DIR = os.path.join(SNAKEFILE_DIR,"scripts")
 ABC_THRESHOLDS = load_abc_thresholds(config)
